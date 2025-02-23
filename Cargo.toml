@@ -1,0 +1,75 @@
+[workspace]
+resolver = "2"
+
+members = [
+    "crates/aptos-crypto",
+    "crates/aptos-crypto-derive",
+    "crates/aptos-types",
+    "crates/move-core-types",
+    "crates/aptos-cached-packages",
+]
+
+[workspace.package]
+authors = ["Boern X <boern.x@gmail.com>"]
+description = "Aptos integration with the Internet Computer"
+repository = "https://github.com/boern/ic-aptos"
+license = "Apache-2.0"
+publish = false
+edition = "2021"
+rust-version = "1.84.0"
+homepage = "https://wwww.omnity.network"
+
+[workspace.dependencies]
+aptos-crypto = { path = "crates/aptos-crypto" }
+aptos-crypto-derive = { path = "crates/aptos-crypto-derive" }
+aptos-types = { path = "crates/aptos-types" }
+aptos-cached-packages = { path = "crates/aptos-cached-packages" }
+move-core-types = { path = "crates/move-core-types" }
+
+hex = { version = "0.4.3", features = ["serde"] }
+num = "0.4.0"
+# rand = { version = "0.8.5" }
+getrandom = { version = "0.2", features = ["custom"] }
+serde = { version = "1.0.193", features = ["derive", "rc"] }
+serde_bytes = "0.11.6"
+serde-name = "0.1.1"
+thiserror = "1.0.37"
+anyhow = "1.0.71"
+curve25519-dalek = "3"
+# curve25519-dalek-ng = "4"
+ed25519-dalek = { version = "1.0.1", features = ["std", "serde"] }
+# ed25519-dalek-bip32 = "0.2.0"
+# x25519-dalek = "1.2.0"
+tiny-keccak = { version = "2.0.2", features = ["keccak", "sha3"] }
+
+bytes = { version = "1.4.0", features = ["serde"] }
+bcs = { git = "https://github.com/aptos-labs/bcs.git", rev = "d31fab9d81748e2594be5cd5cdf845786a30562d" }
+more-asserts = "0.3.0"
+once_cell = "1.10.0"
+ref-cast = "1.0.6"
+hashbrown = "0.14.3"
+ethnum = "1.5.0"
+primitive-types = { version = "0.10" }
+uint = "0.9.4"
+quote = "1.0.18"
+proc-macro2 = "1.0.38"
+syn = { version = "1.0.92", features = ["derive", "extra-traits"] }
+move-binary-format = { git = "https://github.com/aptos-labs/aptos-core", branch = "mainnet", package = "move-binary-format" }
+# dearbitrary = { version = "1.0.4", features = ["derive"] }
+# arbitrary = { version = "1.3.2", features = ["derive"] }
+
+# aptos-crypto = { git = "https://github.com/aptos-labs/aptos-core", branch = "mainnet", package = "aptos-crypto" }
+# aptos-crypto-derive = { git = "https://github.com/aptos-labs/aptos-core", branch = "mainnet", package = "aptos-crypto-derive" }
+base64 = "0.13.0"
+
+[patch.crates-io]
+# x25519-dalek = { git = "https://github.com/aptos-labs/x25519-dalek", branch = "zeroize_v1" }
+
+# x25519-dalek = { git = "https://github.com/aptos-labs/x25519-dalek", branch = "zeroize_v1" }
+# [dev-dependencies]
+# dearbitrary = { version = "1.0.4", features = ["derive"] }
+# arbitrary = { version = "1.3.2", features = ["derive"] }
+
+# [features]
+# default = []
+# fuzzing = ["proptest", "proptest-derive", "arbitrary", "dearbitrary"]

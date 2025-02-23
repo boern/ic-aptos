@@ -1,0 +1,30 @@
+[package]
+name = "aptos-crypto"
+description = "Aptos crypto"
+version = "0.0.3"
+
+# Workspace inherited keys
+authors = { workspace = true }
+edition = { workspace = true }
+homepage = { workspace = true }
+license = { workspace = true }
+publish = { workspace = true }
+repository = { workspace = true }
+rust-version = { workspace = true }
+
+[dependencies]
+aptos-crypto-derive = { workspace = true }
+anyhow = { workspace = true }
+# x25519-dalek = { workspace = true }
+curve25519-dalek = { workspace = true }
+ed25519-dalek = { workspace = true }
+tiny-keccak = { workspace = true }
+bcs = { workspace = true }
+bytes = { workspace = true }
+hex = { workspace = true }
+serde = { workspace = true }
+serde-name = { workspace = true }
+serde_bytes = { workspace = true }
+thiserror = { workspace = true }
+more-asserts = { workspace = true }
+once_cell = { workspace = true }
