@@ -10,6 +10,7 @@ use aptos_crypto::traits::CryptoMaterialError;
 use aptos_crypto_derive::{BCSCryptoHash, CryptoHasher};
 use authenticator::{AccountAuthenticator, TransactionAuthenticator};
 use move_core_types::account_address::AccountAddress;
+use move_core_types::vm_status::{AbortLocation, StatusCode};
 use once_cell::sync::OnceCell;
 pub use script::{EntryFunction, Script};
 use serde::de::DeserializeOwned;
@@ -453,12 +454,12 @@ impl SignedTransaction {
         Ok(())
     }
 
-    // / Returns the hash when the transaction is committed onchain.
-    // pub fn committed_hash(&self) -> HashValue {
-    //     *self
-    //         .committed_hash
-    //         .get_or_init(|| Transaction::UserTransaction(self.clone()).hash())
-    // }
+    /// Returns the hash when the transaction is committed onchain.
+    pub fn committed_hash(&self) -> HashValue {
+        *self
+            .committed_hash
+            .get_or_init(|| Transaction::UserTransaction(self.clone()).hash())
+    }
 }
 
 // #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
@@ -553,33 +554,33 @@ impl SignedTransaction {
 //     }
 // }
 
-// /// The status of VM execution, which contains more detailed failure info
-// #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+/// The status of VM execution, which contains more detailed failure info
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
 // #[cfg_attr(any(test, feature = "fuzzing"), derive(Arbitrary))]
 // #[cfg_attr(any(test, feature = "fuzzing"), proptest(no_params))]
-// pub enum ExecutionStatus {
-//     Success,
-//     OutOfGas,
-//     MoveAbort {
-//         location: AbortLocation,
-//         code: u64,
-//         info: Option<AbortInfo>,
-//     },
-//     ExecutionFailure {
-//         location: AbortLocation,
-//         function: u16,
-//         code_offset: u16,
-//     },
-//     MiscellaneousError(Option<StatusCode>),
-// }
+pub enum ExecutionStatus {
+    Success,
+    OutOfGas,
+    MoveAbort {
+        location: AbortLocation,
+        code: u64,
+        info: Option<AbortInfo>,
+    },
+    ExecutionFailure {
+        location: AbortLocation,
+        function: u16,
+        code_offset: u16,
+    },
+    MiscellaneousError(Option<StatusCode>),
+}
 
-// #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
 // #[cfg_attr(any(test, feature = "fuzzing"), derive(Arbitrary))]
 // #[cfg_attr(any(test, feature = "fuzzing"), proptest(no_params))]
-// pub struct AbortInfo {
-//     pub reason_name: String,
-//     pub description: String,
-// }
+pub struct AbortInfo {
+    pub reason_name: String,
+    pub description: String,
+}
 
 // impl From<KeptVMStatus> for ExecutionStatus {
 //     fn from(kept_status: KeptVMStatus) -> Self {
@@ -1029,13 +1030,13 @@ impl SignedTransaction {
 //     }
 // }
 
-// /// `TransactionInfo` is the object we store in the transaction accumulator. It consists of the
-// /// transaction as well as the execution result of this transaction.
-// #[derive(Clone, CryptoHasher, BCSCryptoHash, Debug, Eq, PartialEq, Serialize, Deserialize)]
+/// `TransactionInfo` is the object we store in the transaction accumulator. It consists of the
+/// transaction as well as the execution result of this transaction.
+#[derive(Clone, CryptoHasher, BCSCryptoHash, Debug, Eq, PartialEq, Serialize, Deserialize)]
 // #[cfg_attr(any(test, feature = "fuzzing"), derive(Arbitrary))]
-// pub enum TransactionInfo {
-//     V0(TransactionInfoV0),
-// }
+pub enum TransactionInfo {
+    V0(TransactionInfoV0),
+}
 
 // impl TransactionInfo {
 //     pub fn new(
@@ -1095,35 +1096,35 @@ impl SignedTransaction {
 //     }
 // }
 
-// #[derive(Clone, CryptoHasher, BCSCryptoHash, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, CryptoHasher, BCSCryptoHash, Debug, Eq, PartialEq, Serialize, Deserialize)]
 // #[cfg_attr(any(test, feature = "fuzzing"), derive(Arbitrary))]
-// pub struct TransactionInfoV0 {
-//     /// The amount of gas used.
-//     gas_used: u64,
+pub struct TransactionInfoV0 {
+    /// The amount of gas used.
+    gas_used: u64,
 
-//     /// The vm status. If it is not `Executed`, this will provide the general error class. Execution
-//     /// failures and Move abort's receive more detailed information. But other errors are generally
-//     /// categorized with no status code or other information
-//     status: ExecutionStatus,
+    /// The vm status. If it is not `Executed`, this will provide the general error class. Execution
+    /// failures and Move abort's receive more detailed information. But other errors are generally
+    /// categorized with no status code or other information
+    status: ExecutionStatus,
 
-//     /// The hash of this transaction.
-//     transaction_hash: HashValue,
+    /// The hash of this transaction.
+    transaction_hash: HashValue,
 
-//     /// The root hash of Merkle Accumulator storing all events emitted during this transaction.
-//     event_root_hash: HashValue,
+    /// The root hash of Merkle Accumulator storing all events emitted during this transaction.
+    event_root_hash: HashValue,
 
-//     /// The hash value summarizing all changes caused to the world state by this transaction.
-//     /// i.e. hash of the output write set.
-//     state_change_hash: HashValue,
+    /// The hash value summarizing all changes caused to the world state by this transaction.
+    /// i.e. hash of the output write set.
+    state_change_hash: HashValue,
 
-//     /// The root hash of the Sparse Merkle Tree describing the world state at the end of this
-//     /// transaction. Depending on the protocol configuration, this can be generated periodical
-//     /// only, like per block.
-//     state_checkpoint_hash: Option<HashValue>,
+    /// The root hash of the Sparse Merkle Tree describing the world state at the end of this
+    /// transaction. Depending on the protocol configuration, this can be generated periodical
+    /// only, like per block.
+    state_checkpoint_hash: Option<HashValue>,
 
-//     /// Potentially summarizes all evicted items from state. Always `None` for now.
-//     state_cemetery_hash: Option<HashValue>,
-// }
+    /// Potentially summarizes all evicted items from state. Always `None` for now.
+    state_cemetery_hash: Option<HashValue>,
+}
 
 // impl TransactionInfoV0 {
 //     pub fn new(
@@ -1628,46 +1629,45 @@ impl SignedTransaction {
 //     }
 // }
 
-// /// `Transaction` will be the transaction type used internally in the aptos node to represent the
-// /// transaction to be processed and persisted.
-// ///
-// /// We suppress the clippy warning here as we would expect most of the transaction to be user
-// /// transaction.
-// #[allow(clippy::large_enum_variant)]
+/// `Transaction` will be the transaction type used internally in the aptos node to represent the
+/// transaction to be processed and persisted.
+///
+/// We suppress the clippy warning here as we would expect most of the transaction to be user
+/// transaction.
+#[allow(clippy::large_enum_variant)]
 // #[cfg_attr(any(test, feature = "fuzzing"), derive(Arbitrary))]
-// #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize, CryptoHasher, BCSCryptoHash)]
-// pub enum Transaction {
-//     /// Transaction submitted by the user. e.g: P2P payment transaction, publishing module
-//     /// transaction, etc.
-//     /// TODO: We need to rename SignedTransaction to SignedUserTransaction, as well as all the other
-//     ///       transaction types we had in our codebase.
-//     UserTransaction(SignedTransaction),
+#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize, CryptoHasher, BCSCryptoHash)]
+pub enum Transaction {
+    /// Transaction submitted by the user. e.g: P2P payment transaction, publishing module
+    /// transaction, etc.
+    /// TODO: We need to rename SignedTransaction to SignedUserTransaction, as well as all the other
+    ///       transaction types we had in our codebase.
+    UserTransaction(SignedTransaction),
+    // / Transaction that applies a WriteSet to the current storage, it's applied manually via aptos-db-bootstrapper.
+    // GenesisTransaction(WriteSetPayload),
 
-//     /// Transaction that applies a WriteSet to the current storage, it's applied manually via aptos-db-bootstrapper.
-//     GenesisTransaction(WriteSetPayload),
+    // /// Transaction to update the block metadata resource at the beginning of a block,
+    // /// when on-chain randomness is disabled.
+    // BlockMetadata(BlockMetadata),
 
-//     /// Transaction to update the block metadata resource at the beginning of a block,
-//     /// when on-chain randomness is disabled.
-//     BlockMetadata(BlockMetadata),
+    // /// Transaction to let the executor update the global state tree and record the root hash
+    // /// in the TransactionInfo
+    // /// The hash value inside is unique block id which can generate unique hash of state checkpoint transaction
+    // StateCheckpoint(HashValue),
 
-//     /// Transaction to let the executor update the global state tree and record the root hash
-//     /// in the TransactionInfo
-//     /// The hash value inside is unique block id which can generate unique hash of state checkpoint transaction
-//     StateCheckpoint(HashValue),
+    // /// Transaction that only proposed by a validator mainly to update on-chain configs.
+    // ValidatorTransaction(ValidatorTransaction),
 
-//     /// Transaction that only proposed by a validator mainly to update on-chain configs.
-//     ValidatorTransaction(ValidatorTransaction),
+    // /// Transaction to update the block metadata resource at the beginning of a block,
+    // /// when on-chain randomness is enabled.
+    // BlockMetadataExt(BlockMetadataExt),
 
-//     /// Transaction to update the block metadata resource at the beginning of a block,
-//     /// when on-chain randomness is enabled.
-//     BlockMetadataExt(BlockMetadataExt),
-
-//     /// Transaction to let the executor update the global state tree and record the root hash
-//     /// in the TransactionInfo
-//     /// The hash value inside is unique block id which can generate unique hash of state checkpoint transaction
-//     /// Replaces StateCheckpoint, with optionally having more data.
-//     BlockEpilogue(BlockEpiloguePayload),
-// }
+    // /// Transaction to let the executor update the global state tree and record the root hash
+    // /// in the TransactionInfo
+    // /// The hash value inside is unique block id which can generate unique hash of state checkpoint transaction
+    // /// Replaces StateCheckpoint, with optionally having more data.
+    // BlockEpilogue(BlockEpiloguePayload),
+}
 
 // impl From<BlockMetadataExt> for Transaction {
 //     fn from(metadata: BlockMetadataExt) -> Self {

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 use move_core_types::account_address::AccountAddress;
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug)]
 pub struct UserTransactionContext {
@@ -71,7 +72,7 @@ impl UserTransactionContext {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct EntryFunctionPayload {
     pub account_address: AccountAddress,
     pub module_name: String,

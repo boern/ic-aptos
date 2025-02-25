@@ -16,14 +16,14 @@ use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::{convert::TryFrom, fmt, str::FromStr};
 use thiserror::Error;
 
+use super::RawTransaction;
 use aptos_crypto::{
     ed25519::{Ed25519PublicKey, Ed25519Signature},
     hash::HashValue,
     traits::CryptoMaterialError,
 };
+use candid::CandidType;
 use move_core_types::account_address::AccountAddress;
-
-use super::RawTransaction;
 
 /// Maximum number of signatures supported in `TransactionAuthenticator`,
 /// across all `AccountAuthenticator`s included.
@@ -445,6 +445,7 @@ impl AccountAuthenticator {
     PartialEq,
     PartialOrd,
     SerializeKey,
+    CandidType,
 )]
 pub struct AuthenticationKey([u8; AuthenticationKey::LENGTH]);
 

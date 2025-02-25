@@ -7,6 +7,7 @@ members = [
     "crates/aptos-types",
     "crates/move-core-types",
     "crates/aptos-cached-packages",
+    "crates/aptos-api-types",
 ]
 
 [workspace.package]
@@ -25,6 +26,8 @@ aptos-crypto-derive = { path = "crates/aptos-crypto-derive" }
 aptos-types = { path = "crates/aptos-types" }
 aptos-cached-packages = { path = "crates/aptos-cached-packages" }
 move-core-types = { path = "crates/move-core-types" }
+aptos-api-types = { path = "crates/aptos-api-types" }
+# move-binary-format = { path = "crates/move-binary-format" }
 
 hex = { version = "0.4.3", features = ["serde"] }
 num = "0.4.0"
@@ -33,6 +36,12 @@ getrandom = { version = "0.2", features = ["custom"] }
 serde = { version = "1.0.193", features = ["derive", "rc"] }
 serde_bytes = "0.11.6"
 serde-name = "0.1.1"
+# Note: arbitrary_precision is required to parse u256 in JSON
+serde_json = { version = "1.0.81", features = [
+    "preserve_order",
+    "arbitrary_precision",
+] }
+
 thiserror = "1.0.37"
 anyhow = "1.0.71"
 curve25519-dalek = "3"
@@ -61,6 +70,7 @@ move-binary-format = { git = "https://github.com/aptos-labs/aptos-core", branch 
 # aptos-crypto = { git = "https://github.com/aptos-labs/aptos-core", branch = "mainnet", package = "aptos-crypto" }
 # aptos-crypto-derive = { git = "https://github.com/aptos-labs/aptos-core", branch = "mainnet", package = "aptos-crypto-derive" }
 base64 = "0.13.0"
+candid = { version = "0.10" }
 
 [patch.crates-io]
 # x25519-dalek = { git = "https://github.com/aptos-labs/x25519-dalek", branch = "zeroize_v1" }

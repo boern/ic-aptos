@@ -10,3 +10,4 @@ pub mod safe_serialize;
 pub mod transaction_argument;
 pub mod u256;
 pub mod value;
+pub mod vm_status;
