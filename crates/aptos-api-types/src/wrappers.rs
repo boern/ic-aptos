@@ -11,7 +11,7 @@
 //! then be unpacked to the real type beneath.
 
 use crate::{Address, VerifyInput, U64};
-use anyhow::{bail, Context};
+use anyhow::bail;
 use aptos_types::event::EventKey;
 use move_core_types::identifier::{IdentStr, Identifier};
 // use poem_openapi::Object;

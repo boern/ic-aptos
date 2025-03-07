@@ -42,7 +42,7 @@ use crate::{
     account_address::AccountAddress,
     // state_store::state_key::{inner::StateKeyInner, StateKey},
 };
-use anyhow::{Error, Result};
+use anyhow::Result;
 use aptos_crypto::hash::HashValue;
 use move_core_types::language_storage::{ModuleId, StructTag};
 // #[cfg(any(test, feature = "fuzzing"))]

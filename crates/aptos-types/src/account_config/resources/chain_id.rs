@@ -10,16 +10,18 @@ use move_core_types::{
 };
 use serde::Deserialize;
 
+use crate::chain_id::ChainId;
+
 #[derive(Deserialize)]
 pub struct ChainIdResource {
     chain_id: u8,
 }
 
-// impl ChainIdResource {
-//     pub fn chain_id(&self) -> ChainId {
-//         ChainId::new(self.chain_id)
-//     }
-// }
+impl ChainIdResource {
+    pub fn chain_id(&self) -> ChainId {
+        ChainId::new(self.chain_id)
+    }
+}
 
 impl MoveStructType for ChainIdResource {
     const MODULE_NAME: &'static IdentStr = ident_str!("chain_id");

@@ -13,11 +13,17 @@ build: ## Build for wasm target
 	cargo build --release --target wasm32-unknown-unknown
 
 .PHONY: check
-check: build ## Check the wasm-bindgen deps
+check: build ## Check the incompatible deps
 	@if cargo tree 2>/dev/null | grep -q wasm-bindgen; then \
 		cargo tree | grep wasm-bindgen; \
 	else \
 		echo "no found wasm-bindgen"; \
+	fi
+
+	@if cargo tree 2>/dev/null | grep -q tokio; then \
+		cargo tree | grep tokio; \
+	else \
+		echo "no found tokio"; \
 	fi
 
 .PHONY: clean

@@ -2,7 +2,7 @@
 // Parts of the project are originally copyright © Meta Platforms, Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-use anyhow::{bail, ensure, Error, Result};
+use anyhow::{ensure, Error, Result};
 use aptos_crypto::{Signature, ValidCryptoMaterial, ValidCryptoMaterialStringExt};
 use aptos_crypto_derive::{CryptoHasher, DeserializeKey, SerializeKey};
 // use aptos_crypto::{
@@ -12,7 +12,7 @@ use aptos_crypto_derive::{CryptoHasher, DeserializeKey, SerializeKey};
 // #[cfg(any(test, feature = "fuzzing"))]
 // use proptest_derive::Arbitrary;
 // use rand::{rngs::OsRng, Rng};
-use serde::{Deserialize, Deserializer, Serialize, Serializer};
+use serde::{Deserialize, Serialize};
 use std::{convert::TryFrom, fmt, str::FromStr};
 use thiserror::Error;
 
