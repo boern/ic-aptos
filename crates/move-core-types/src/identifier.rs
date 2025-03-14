@@ -96,6 +96,7 @@ pub const fn is_valid(s: &str) -> bool {
 pub(crate) static ALLOWED_IDENTIFIERS: &str =
     r"(?:[a-zA-Z][a-zA-Z0-9_]*)|(?:_[a-zA-Z0-9_]+)|(?:<SELF>)|(?:<SELF>_[0-9]+)";
 
+#[allow(dead_code)]
 pub(crate) static ALLOWED_NO_SELF_IDENTIFIERS: &str =
     r"(?:[a-zA-Z][a-zA-Z0-9_]*)|(?:_[a-zA-Z0-9_]+)";
 

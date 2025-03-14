@@ -420,6 +420,7 @@ impl U256 {
 
     /// Implementation of widenining multiply
     /// https://github.com/rust-random/rand/blob/master/src/distributions/utils.rs
+    #[allow(dead_code)]
     #[inline(always)]
     fn wmul(self, b: Self) -> (Self, Self) {
         let half = 128;
@@ -557,7 +558,7 @@ impl TryFrom<U256> for u128 {
 
 // Rand impl below are inspired by u128 impl found in https://rust-random.github.io/rand/src/rand/distributions/uniform.rs.html
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq,Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 // #[cfg_attr(feature = "serde1", derive(Serialize, Deserialize))]
 pub struct UniformU256 {
     low: U256,
